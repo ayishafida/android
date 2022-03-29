@@ -1,0 +1,87 @@
+ImageAdapter.java
+
+package com.example.gridimagenew;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+public class ImageAdapter extends ArrayAdapter<ImageModel> {
+    public ImageAdapter(@NonNull Context context, ArrayList<ImageModel>
+            imageModelArrayList) {
+        super(context, 0,imageModelArrayList);
+    }
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup
+            parent){
+        View listitemView=convertView;
+        if (listitemView==null){
+            listitemView= LayoutInflater.from(getContext()).inflate(R.layout.card_item,parent,false);
+        }
+        ImageModel imageModel=getItem(position);
+        ImageView imIV=listitemView.findViewById(R.id.ivimage);
+        return listitemView;
+    }
+}
+
+ImageModel.java
+
+package com.example.gridimagenew;
+
+public class ImageModel {
+    private int image;
+    public ImageModel(int image){
+        this.image=image;
+    }
+    public int getImg_name(){
+        return image;
+    }
+    public void setImg_name(String img_name){
+        this.image=image;
+    }
+}
+
+MainActivity.java
+
+
+package com.example.gridimagenew;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import java.util.ArrayList;
+public class MainActivity extends AppCompatActivity {
+    GridView imageGV;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String[] items={"One","Two","Three","Four"};
+        setContentView(R.layout.activity_main);
+        imageGV=findViewById(R.id.gvitem);
+        ArrayList<ImageModel>imageModelArrayList=new ArrayList<ImageModel>();
+        imageModelArrayList.add(new ImageModel(R.drawable.a));
+        imageModelArrayList.add(new ImageModel(R.drawable.b));
+        imageModelArrayList.add(new ImageModel(R.drawable.c));
+        imageModelArrayList.add(new ImageModel(R.drawable.d));
+        ImageAdapter adapter=new ImageAdapter(this,imageModelArrayList);
+        imageGV.setAdapter(adapter);
+
+        imageGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                new AlertDialog.Builder(MainActivity.this).setMessage(items[i]).show();
+            }
+        });
+    }
+}
